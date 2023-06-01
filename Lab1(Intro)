@@ -1,0 +1,29 @@
+create database ADVANCED;
+use ADVANCED;
+create table Student1(
+	ID int,
+	Name varchar(20),
+	RN int,
+	Batch int,
+	);
+insert into Student1(ID,Name,RN,Batch)
+values (01,'Shubham',10,2077),(02,'Ram',20,2077),(3,'Shyam',30,077),(4,'Hari',40,077),(4,'Krish',50,077);
+create table teacher
+(
+	TID int,
+	Name varchar(20),
+	Faculty varchar(10),
+);
+insert into teacher(TID,Name,Faculty)
+values (1,'Laxmi','BCT'),(2,'Dhiraj','BEI'),(3,'Bikash','BCT'),(4,'Ajay','BCT/BEI'),(5,'Kajal','BEL');
+select *from Student1;
+select *from teacher;
+select Name from Student1;
+select Name,Faculty from teacher;
+alter table student1
+drop column ID
+alter table teacher
+add salary int;
+select RN,name into info_student1 from Student1;
+select *from info_student1;
+delete info_student1;
