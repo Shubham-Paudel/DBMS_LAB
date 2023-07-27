@@ -1,0 +1,247 @@
+--Lab 1
+create database SHUBHAM034;
+use SHUBHAM034;
+create table Students(
+	ID int,
+	Name varchar(20),
+	RN int,
+	Batch int,
+	);
+insert into Students(ID,Name,RN,Batch)
+values (01,'Shubham',10,2077),(02,'Ram',20,2077),(3,'Shyam',30,2077),(4,'Hari',40,2077),(5,'Krish',50,2077);
+create table teacher
+(
+	TID int,
+	Name varchar(20),
+	Faculty varchar(10),
+);
+insert into teacher(TID,Name,Faculty)
+values (1,'Laxmi','BCT'),(2,'Dhiraj','BEI'),(3,'Bikash','BCT'),(4,'Ajay','BCT/BEI'),(5,'Kajal','BEL');
+select *from Students;
+select *from teacher;
+select Name from Students;
+select Name,Faculty from teacher;
+alter table students
+drop column RN
+alter table teacher
+add salary int;
+select ID,name into info_students from Students;
+select *from info_students;
+delete info_students;
+alter table students
+alter column id int NOT NULL  
+
+--Lab 2 (Constraints,Integrity & where clause)
+USE SHUBHAM034;
+CREATE TABLE Employee
+(
+	eid int NOT NULL,
+	ename varchar(20),
+	dateofemploy date,
+	Salary int,
+	CONSTRAINT P_K PRIMARY KEY(eid),
+);
+CREATE TABLE Booklist
+(
+	isbn int NOT NULL,
+	name varchar(20),
+	publication varchar(20),
+	CONSTRAINT P_BK PRIMARY KEY(isbn),
+);
+CREATE TABLE Book
+(
+	bid int NOT NULL,
+	bname varchar(20),
+	author varchar(20),
+	Price int,
+	CONSTRAINT P_Book PRIMARY KEY(bid),
+);
+CREATE TABLE Issues
+(
+	iid int NOT NULL,
+	name varchar(20),
+	dateofissue date,
+	CONSTRAINT P_Issue PRIMARY KEY(iid),
+);
+ALTER TABLE Students
+add tid int
+SELECT *from Students
+update Students
+set tid=3 where id=5
+ALTER TABLE Students
+add constraint f_kk foreign key(tid) references teacher(tid) 
+--LAB-3 
+alter table booklist
+add bid int
+alter table book
+add iid int
+alter table booklist
+add constraint chk_bk check (price<5000)
+alter table booklist
+add foreign key (bid) references book(bid)
+insert into employee values(1,'ram','2010-1-1',20000),
+						   (2,'shyam','2011-5-2',150000),
+						   (3,'hari','2012-6-6',9000),
+						   (4,'prakash','2013-5-9',25000);
+insert into booklist values(1,'math','read more'),
+						   (2,'science','puspa'),
+						   (3,'social','mcGraw Hill'),
+						   (4,'physics','stanford');
+select * from Employee
+select * from Booklist
+insert into book values    (1,'math','IA',5000),
+						   (2,'science','HPK',2000),
+						   (3,'social','SA',1000),
+						   (4,'physics','SPA',3000); 
+ 
+insert into issues values(1,'math','2023-1-1'),
+						   (2,'science','2022-7-9'),
+						   (3,'social','2023-9-9'),
+					   (4,'physics','2024-6-25');	
+--8
+select eid,ename from Employee where Salary<10000;
+--9
+select *from Book where Price between 2500 and 5000;
+--10
+select *from Booklist where publication like 'r%';
+--11
+select *from Employee where ename like '%am';
+--12
+select iid,name from Issues where name like '______';
+--13
+select *from Employee where ename like 's%' and Salary > 10000;
+--14
+select *from Book where bid between 1001 and 20000 or Price between 1000 and 2500;
+--15
+select isbn,publication from Booklist where isbn not like '1003';
+
+--Lab 3
+--1
+select Booklist.publication,Book.author,book.bname
+from Book inner join Booklist on book.bname=Booklist.name
+where Booklist.publication='puspa'
+--2
+select teacher.Name,teacher.Faculty
+from teacher join Issues on 
+--3
+alter table issues
+add tid int
+update Issues
+set tid = '2'
+where dateofissue='2024-6-25'
+
+alter table issues
+add foreign key(tid) references teacher(tid)
+
+select teacher.name,teacher.Faculty
+from teacher,Issues where teacher.TID=Issues.tid and Issues.dateofissue='2024-6-25'
+
+--3
+alter table employee
+add tid int
+update Employee
+set tid = 2
+where salary=9000
+
+alter table employee
+add foreign key(tid) references teacher(tid)
+
+select Employee.ename from Employee,teacher where Employee.Salary>10000 and teacher.Faculty='BCT' and Employee.tid=teacher.tid
+
+--4
+alter table issues
+add bid int
+
+--5
+update Issues
+set tid = 3
+where bid=3
+select * from Issues
+
+select teacher.Name,book.bname from teacher,Book,Issues where teacher.TID=Book.bid and teacher.TID=Issues.tid and teacher.Name like 'b%'
+
+--6
+
+update Employee
+set Salary=Salary*1.1
+
+--7
+update Book
+set bname='mathematics'
+where bname='math'
+
+--8
+update Employee
+set Salary=Salary+Salary*0.2
+where Salary<5000
+
+--9
+update Employee
+set Salary=Salary*1.2 where Salary<10000
+
+--10
+update Employee set Salary = case when salary>20000 then Salary*1.05 else salary*1.2 end;
+
+--11
+delete from Employee
+where eid=4
+
+--12
+select teacher.Name, teacher.Faculty from teacher where TID in (select TID from Employee where dateofemploy='2012-06-06')
+
+--13
+select book.bname,book.author from Book where bid in (select bid from Booklist where publication='read')
+
+
+--lab 4
+--q1
+select *from Employee order by Salary desc
+
+--Q2
+
+select *from Booklist order by name,publication 
+
+--3
+
+
+-- Prince Portion
+-- question 4 
+select SUM(salary) from Employee;
+
+--question 3
+select top 3 * from teacher;
+
+--question 5
+select MIN(salary) from Employee;
+
+--question 6
+select AVG(price) from Book where author in (Select author from Book group by author)
+
+-- question 7
+select Booklist.publication,COUNT(*) as countnum from Booklist group by publication 
+
+--8
+select Book.bid,book.bname from Book where Price > (select AVG(price) from Book)
+
+--9
+select bid,bname,author from Book where author like 's%' order by author asc 
+
+--10
+
+select teacher.Name,Issues.name from teacher,Issues where teacher.TID=Issues.tid and teacher.salary in (select MAX(salary) from teacher)
+
+select * from teacher
+select * from Issues
+select * from Book
+select * from Booklist
+update teacher
+set salary = 9000
+where tid =5
+
+--11
+
+select author from Book group by author having COUNT(*)>1
+
+----Lab 5--------
+
+--1
